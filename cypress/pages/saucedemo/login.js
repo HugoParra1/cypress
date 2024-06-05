@@ -2,7 +2,8 @@ class LoginPage {
     elements = {
         usernameInput: () => cy.get("#user-name"),
         passwordInput: () => cy.get("#password"),
-        loginButton: () => cy.get("#login-button")
+        loginButton: () => cy.get("#login-button"),
+        errorMessage: () => cy.get('[data-test="error"]')
     }
 
     typeUsername(username) {
@@ -17,6 +18,9 @@ class LoginPage {
         this.elements.loginButton().click()
     }
 
+    createErrorMessage() {
+        return this.elements.errorMessage()
+    }
     login(username, password) {
         this.typeUsername(username)
         this.typePassword(password)

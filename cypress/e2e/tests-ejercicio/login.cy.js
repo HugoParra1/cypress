@@ -27,31 +27,31 @@ describe("Login", () => {
 
     it("Login with invalid credentials", () => {
         LoginPage.login("Invalid", "Invalid")
-        cy.get('[data-test="error"]').should("exist")
-        cy.get('[data-test="error"]').should("have.text", "Epic sadface: Username and password do not match any user in this service")
+        LoginPage.createErrorMessage().should("exist")
+        LoginPage.createErrorMessage().should("have.text", "Epic sadface: Username and password do not match any user in this service")
         cy.url().should("eq", "https://www.saucedemo.com/")
     })
 
     it('Login without credentials', () => {
         LoginPage.clickLogin()
-        cy.get('[data-test="error"]').should("exist")
-        cy.get('[data-test="error"]').should("have.text", "Epic sadface: Username is required")
+        LoginPage.createErrorMessage().should("exist")
+        LoginPage.createErrorMessage().should("have.text", "Epic sadface: Username is required")
         cy.url().should("eq", "https://www.saucedemo.com/")
     });
 
     it('Login without username', () => {
         LoginPage.typePassword("Invalid")
         LoginPage.clickLogin()
-        cy.get('[data-test="error"]').should("exist")
-        cy.get('[data-test="error"]').should("have.text", "Epic sadface: Username is required")
+        LoginPage.createErrorMessage().should("exist")
+        LoginPage.createErrorMessage().should("have.text", "Epic sadface: Username is required")
         cy.url().should("eq", "https://www.saucedemo.com/")
     });
 
     it('Login without password', () => {
         LoginPage.typeUsername("Invalid")
         LoginPage.clickLogin()
-        cy.get('[data-test="error"]').should("exist")
-        cy.get('[data-test="error"]').should("have.text", "Epic sadface: Password is required")
+        LoginPage.createErrorMessage().should("exist")
+        LoginPage.createErrorMessage().should("have.text", "Epic sadface: Password is required")
         cy.url().should("eq", "https://www.saucedemo.com/")
     });
 
@@ -60,8 +60,8 @@ describe("Login", () => {
         if (username === "locked_out_user") {
             it('Login with all the credentials user: ' + username, () => {
                 LoginPage.login(username, "secret_sauce")
-                cy.get('[data-test="error"]').should("exist")
-                cy.get('[data-test="error"]').should("have.text", "Epic sadface: Sorry, this user has been locked out.")
+                LoginPage.createErrorMessage().should("exist")
+                LoginPage.createErrorMessage().should("have.text", "Epic sadface: Sorry, this user has been locked out.")
                 cy.url().should("eq", "https://www.saucedemo.com/")
 
             });
@@ -78,8 +78,8 @@ describe("Login", () => {
     // Prueba que en cypress no funcion, en navegador normal si lo intentas te redirecciona a login, aqui te manda un 404
     // it('Go to the inventory without login', () => {
     //     cy.visit("https://www.saucedemo.com/inventory.html")
-    //     cy.get('[data-test="error"]').should("exist")
-    //     cy.get('[data-test="error"]').should("have.text", "Epic sadface: You can only access '/inventory.html' when you are logged in.")
+    //     LoginPage.createErrorMessage().should("exist")
+    //     LoginPage.createErrorMessage().should("have.text", "Epic sadface: You can only access '/inventory.html' when you are logged in.")
     //     cy.url().should("eq", "https://www.saucedemo.com/")
 
     // });
