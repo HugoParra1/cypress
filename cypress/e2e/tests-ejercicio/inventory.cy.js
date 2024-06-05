@@ -1,27 +1,51 @@
+const LoginPage = require("../../pages/saucedemo/login");
+const InventoryPage = require("../../pages/saucedemo/inventory");
 describe ("Inventory", () => {
 
     beforeEach(() => {
-        cy.login("standard_user", "secret_sauce")
+        cy.visit("/")
+        LoginPage.login("standard_user", "secret_sauce")
+        cy.url().should("contain", "/inventory.html")
     })
     it("Validate results in the inventory", () => {
-        cy.get(".inventory_list .inventory_item").should("have.length", 6)
+        InventoryPage.getInventoryList().should("have.length", 6)
     })
 
     it("Increment the shopping cart counter", () => {
-        cy.get('[data-test="add-to-cart-sauce-labs-bolt-t-shirt"]').click()
-        cy.get('[data-test="shopping-cart-badge"]').should("have.text", "1")
+        InventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
+        InventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
+        InventoryPage.getShoppingCartBadge().should("have.text", "1")
     })
 
     it('Delete button visibility in the shopping cart', () => {
-        cy.get('[data-test="add-to-cart-sauce-labs-onesie"]').click()
-        cy.get('[data-test="remove-sauce-labs-onesie"]').should("be.visible")
-        cy.get('[data-test="shopping-cart-badge"]').should("be.visible")
+        InventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
+        InventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
+        InventoryPage.getShoppingCartBadge().should("be.visible")
     });
 
     it('Delete item in the shopping cart', () => {
-        cy.get('[data-test="add-to-cart-sauce-labs-onesie"]').click()
-        cy.get('[data-test="remove-sauce-labs-onesie"]').click()
-        cy.get('[data-test="remove-sauce-labs-onesie"]').should("not.exist")
-        cy.get('[data-test="shopping-cart-badge"]').should("not.exist")
+        InventoryPage.addAndRemoveItem("sauce-labs-bolt-t-shirt")
+        InventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("not.exist")
+        InventoryPage.getShoppingCartBadge().should("not.exist")
     })  
+
+    it('Open the cart', () => {
+        InventoryPage.getShoppingCartButton().click()
+        cy.url().should("contain", "/cart.html")
+        cy.url().should("not.contain", "/inventory.html")
+    });
+
+    it('Check the burger menu', () => {
+        InventoryPage.checkBurgerMenu()
+    });
+
+    it('Log out', () => {
+        InventoryPage.logOut()
+        cy.url().should("not.contain", "/inventory.html")
+    });
+
+    it('Change the order', () => {
+        InventoryPage.changeOrder(3)
+        InventoryPage.getInventoryList().should("be.visible")
+    });
 })
