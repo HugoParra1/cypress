@@ -8,17 +8,19 @@ class LoginPage {
 
     typeUsername(username) {
         this.elements.usernameInput().type(username)
+        return this
     }
 
     typePassword(password) {
         this.elements.passwordInput().type(password)
+        return this
     }
 
     clickLogin() {
         this.elements.loginButton().click()
     }
 
-    createErrorMessage() {
+    getErrorMessage() {
         return this.elements.errorMessage()
     }
     login(username, password) {

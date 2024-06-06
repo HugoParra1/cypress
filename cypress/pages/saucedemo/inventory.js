@@ -1,6 +1,6 @@
-class inventory {
+class InventoryPage {
     elements = {
-        shoppingCart : () => cy.get('[data-test="shopping-cart-link"]'),
+        shoppingCart: () => cy.get('[data-test="shopping-cart-link"]'),
         shoppingCartBadge: () => cy.get('[data-test="shopping-cart-badge"]'),
         orderDropdown: () => cy.get('[data-test="product-sort-container"]'),
         burgerMenuButton: () => cy.get('#react-burger-menu-btn'),
@@ -12,12 +12,13 @@ class inventory {
 
     clickAddToCart() {
         this.elements.addToCartButton().click()
+        return this
     }
-     
+
     getInventoryList() {
         return this.elements.inventoryList()
     }
-    
+
     getShoppingCartBadge() {
         return this.elements.shoppingCartBadge()
     }
@@ -31,12 +32,13 @@ class inventory {
         return cy.get('[data-test="add-to-cart-' + item + '"]')
     }
 
-    changeOrder(order) {
+    changeOrderOfProducts(order) {
         this.elements.orderDropdown().select(order)
     }
 
     openBurgerMenu() {
         this.elements.burgerMenuButton().click()
+        return this
     }
 
     getRemoveButton(item) {
@@ -45,6 +47,7 @@ class inventory {
 
     closeBurgerMenu() {
         this.elements.burgerCloseButton().click()
+        return this
     }
 
     getBurgerMenuItemList() {
@@ -65,12 +68,7 @@ class inventory {
         this.getRemoveButton(item).click()
     }
 
-    checkBurgerMenu() {
-        this.openBurgerMenu()
-        this.getBurgerMenuItemList().should("be.visible")
-        this.closeBurgerMenu()
-    }
 
 }
 
-module.exports = new inventory()
+module.exports = new InventoryPage()

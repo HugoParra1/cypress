@@ -1,51 +1,57 @@
-const LoginPage = require("../../pages/saucedemo/login");
-const InventoryPage = require("../../pages/saucedemo/inventory");
-describe ("Inventory", () => {
+const loginPage = require("../../pages/saucedemo/login");
+const inventoryPage = require("../../pages/saucedemo/inventory");
+describe("Inventory", () => {
 
     beforeEach(() => {
         cy.visit("/")
-        LoginPage.login("standard_user", "secret_sauce")
+        loginPage.login("standard_user", "secret_sauce")
         cy.url().should("contain", "/inventory.html")
     })
     it("Validate results in the inventory", () => {
-        InventoryPage.getInventoryList().should("have.length", 6)
+        inventoryPage.getInventoryList().should("have.length", 6)
     })
 
     it("Increment the shopping cart counter", () => {
-        InventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
-        InventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
-        InventoryPage.getShoppingCartBadge().should("have.text", "1")
+        inventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
+        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
+        inventoryPage.getShoppingCartBadge().should("have.text", "1")
     })
 
     it('Delete button visibility in the shopping cart', () => {
-        InventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
-        InventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
-        InventoryPage.getShoppingCartBadge().should("be.visible")
+        inventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
+        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
+        inventoryPage.getShoppingCartBadge().should("be.visible")
     });
 
     it('Delete item in the shopping cart', () => {
-        InventoryPage.addAndRemoveItem("sauce-labs-bolt-t-shirt")
-        InventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("not.exist")
-        InventoryPage.getShoppingCartBadge().should("not.exist")
-    })  
+        inventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
+        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").click()
+        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("not.exist")
+        inventoryPage.getShoppingCartBadge().should("not.exist")
+    })
 
     it('Open the cart', () => {
-        InventoryPage.getShoppingCartButton().click()
-        cy.url().should("contain", "/cart.html")
+        inventoryPage.getShoppingCartButton().click()
+        cy.get("[data-test='checkout']").should("be.visible")
         cy.url().should("not.contain", "/inventory.html")
     });
 
     it('Check the burger menu', () => {
-        InventoryPage.checkBurgerMenu()
+        inventoryPage.openBurgerMenu()
+        inventoryPage.getBurgerMenuItemList().should("be.visible")
+        inventoryPage.closeBurgerMenu()
     });
 
     it('Log out', () => {
-        InventoryPage.logOut()
+        inventoryPage.logOut()
         cy.url().should("not.contain", "/inventory.html")
     });
 
-    it('Change the order', () => {
-        InventoryPage.changeOrder(3)
-        InventoryPage.getInventoryList().should("be.visible")
+    it('Change the order of the products', () => {
+        inventoryPage.changeOrderOfProducts(3)
+        inventoryPage.getInventoryList().should("be.visible")
+        inventoryPage.getInventoryList().should("have.length", 6)
+        inventoryPage.getInventoryList().first().should("contain", "Sauce Labs Fleece Jacket")
+        
     });
 })
