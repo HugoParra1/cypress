@@ -62,13 +62,6 @@ class InventoryPage {
         this.openBurgerMenu()
         this.clickLogOut()
     }
-
-    addAndRemoveItem(item) {
-        this.getAddToCartButton(item).click()
-        this.getRemoveButton(item).click()
-    }
-
-
 }
 
 module.exports = new InventoryPage()
