@@ -1,4 +1,5 @@
 const loginPage = require("../../pages/saucedemo/login");
+const usernames = require ('../../fixtures/users.json');
 
 describe("Login", () => {
     const usernames = [
