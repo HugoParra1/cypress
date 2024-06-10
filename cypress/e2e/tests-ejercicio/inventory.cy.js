@@ -1,5 +1,6 @@
 const loginPage = require("../../pages/saucedemo/login");
 const inventoryPage = require("../../pages/saucedemo/inventory");
+const ITEM_IN_CART ="sauce-labs-bolt-t-shirt"
 describe("Inventory", () => {
 
     beforeEach(() => {
@@ -12,26 +13,26 @@ describe("Inventory", () => {
     })
 
     it("Increment the shopping cart counter", () => {
-        inventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
-        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
+        inventoryPage.addAnItemToCart(ITEM_IN_CART)
+        inventoryPage.getRemoveButton(ITEM_IN_CART).should("be.visible")
         inventoryPage.getShoppingCartBadge().should("have.text", "1")
     })
 
     it('Delete button visibility in the shopping cart', () => {
-        inventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
-        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("be.visible")
+        inventoryPage.addAnItemToCart(ITEM_IN_CART)
+        inventoryPage.getRemoveButton(ITEM_IN_CART).should("be.visible")
         inventoryPage.getShoppingCartBadge().should("be.visible")
     });
 
     it('Delete item in the shopping cart', () => {
-        inventoryPage.getAddToCartButton("sauce-labs-bolt-t-shirt").click()
-        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").click()
-        inventoryPage.getRemoveButton("sauce-labs-bolt-t-shirt").should("not.exist")
+        inventoryPage.addAnItemToCart(ITEM_IN_CART)
+        inventoryPage.removeAnItemFromCart(ITEM_IN_CART)
+        inventoryPage.getRemoveButton(ITEM_IN_CART).should("not.exist")
         inventoryPage.getShoppingCartBadge().should("not.exist")
     })
 
     it('Open the cart', () => {
-        inventoryPage.getShoppingCartButton().click()
+        inventoryPage.goToShoppingCart()
         cy.get("[data-test='checkout']").should("be.visible")
         cy.url().should("not.contain", "/inventory.html")
     });
