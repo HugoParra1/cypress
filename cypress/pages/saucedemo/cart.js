@@ -6,7 +6,7 @@ class CartPage {
     }
 
     getListItem() {
-        return this.elements.cartList().find('.cart_item_label>a>[data-test="inventory-item-name"]')
+        return this.elements.cartList().find('[data-test="inventory-item-name"]')
     }
 
     getCheckoutButton() {
