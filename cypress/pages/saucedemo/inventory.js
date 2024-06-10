@@ -32,6 +32,18 @@ class InventoryPage {
         return cy.get('[data-test="add-to-cart-' + item + '"]')
     }
 
+    addAnItemToCart(item) {
+        this.getAddToCartButton(item).click()
+    }
+
+    removeAnItemFromCart(item) {
+        this.getRemoveButton(item).click()
+    }
+
+    goToShoppingCart() {
+        this.getShoppingCartButton().click()
+    }
+
     changeOrderOfProducts(order) {
         this.elements.orderDropdown().select(order)
     }
